@@ -1,4 +1,3 @@
-
 package com.example.admin.fingertwister;
 
 import android.support.v7.app.AppCompatActivity;
@@ -144,4 +143,5 @@ public class MultiPlayerActivity extends AppCompatActivity {
     public void onClickBack (View view) {
         finish();
     }
+
 }

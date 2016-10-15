@@ -1,4 +1,3 @@
-
 package com.example.admin.fingertwister;
 
 import android.content.ContentValues;
@@ -9,10 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
+public class HighscoreDbHelper extends SQLiteOpenHelper {
 
-class HighscoreDbHelper extends SQLiteOpenHelper{
-
-    // Variablen für Datenbank
+    // Variablen fÃ¼r Datenbank
     public static  final String DB_NAME = "highscore.db";
     public static final int DB_VERSION = 1;
     public static final String TABLE_HIGHSCORE = "highscores";
@@ -23,7 +21,6 @@ class HighscoreDbHelper extends SQLiteOpenHelper{
     public static final String SQL_CREATE = "create table " + TABLE_HIGHSCORE + "(" +
             COLUMN_ID + " integer primary key, " +
             COLUMN_NAME + " text, " + COLUMN_POINTS + " integer);";
-
 
     public HighscoreDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -106,7 +103,7 @@ class HighscoreDbHelper extends SQLiteOpenHelper{
 
     public int bestScore(String name) {
         String query = "SELECT MAX(" + COLUMN_POINTS + ") FROM " + TABLE_HIGHSCORE
-                + " WHERE " + COLUMN_NAME + " = ’" + name + "’ GROUP BY "
+                + " WHERE " + COLUMN_NAME + " = â€™" + name + "â€™ GROUP BY "
                 + COLUMN_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);

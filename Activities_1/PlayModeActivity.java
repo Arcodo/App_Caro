@@ -1,4 +1,3 @@
-
 package com.example.admin.fingertwister;
 
 import android.content.Intent;
@@ -42,4 +41,3 @@ public class PlayModeActivity extends AppCompatActivity {
     }
 
 }
-
