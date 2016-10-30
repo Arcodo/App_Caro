@@ -1,21 +1,22 @@
 package com.example.admin.fingertwister;
 
+import java.util.Comparator;
 
-public class Score {
+public class Score implements Comparable<Score> {
 
     private int id;
     private String name;
     private int points;
 
-    public Score(int idNew, String nameNew, int pointsNew) {
-        this.setId(idNew);
-        this.setName(nameNew);
-        this.setPoints(pointsNew);
+    public Score(int idNeu, String nameNeu, int pointsNeu) {
+        this.setId(idNeu);
+        this.setName(nameNeu);
+        this.setPoints(pointsNeu);
     }
 
-    public Score(String nameNew, int pointsNew) {
-        this.setName(nameNew);
-        this.setPoints(pointsNew);
+    public Score(String nameNeu, int pointsNeu) {
+        this.setName(nameNeu);
+        this.setPoints(pointsNeu);
     }
 
     public int getId() {
@@ -42,4 +43,12 @@ public class Score {
         this.points = points;
     }
 
+    public String toString() {
+        return "ID: " + getId() + ", Name: " + getName() + ", Punkte: " + getPoints();
+    }
+
+    @Override
+    public int compareTo(Score score) {
+        return score.getPoints() - this.points;
+    }
 }

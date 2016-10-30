@@ -10,13 +10,13 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     // Viewobjekte
-    private TextView ausgabeWillk;
-    private Button buttonSpiel;
-    private Button buttonBest;
+    private TextView ausgabeWillkommen;
+    private Button spielStarten;
+    private Button bestenliste;
     private Button beschreibung;
 
     //
-    private HighscoreDbHelper dB;
+    private DatabaseHandler dB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,23 +24,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Referenzen auf Viewobjekte zuweisen
-        ausgabeWillk = (TextView) findViewById(R.id.ausgabeWillk);
-        buttonSpiel = (Button) findViewById(R.id.buttonSpiel);
-        buttonBest = (Button) findViewById(R.id.buttonBest);
+        ausgabeWillkommen = (TextView) findViewById(R.id.ausgabeWillkommen);
+        spielStarten = (Button) findViewById(R.id.spielStarten);
+        bestenliste = (Button) findViewById(R.id.bestenliste);
         beschreibung = (Button) findViewById(R.id.beschreibung);
 
         // Referenz auf          zuweisen
-        dB = new HighscoreDbHelper(this);
+        dB = new DatabaseHandler(this);
     }
 
-    public void OnClickGame(View view) {
-        Intent spielauswahl = new Intent(this, PlayModeActivity.class);
-        startActivity(spielauswahl);
+    public void onClickStartGame(View view) {
+        Intent spielStarten = new Intent(this, PlayActivity.class);
+        startActivity(spielStarten);
     }
 
-    public void OnClickInfo(View view) {
-        Intent info = new Intent(this, InfoActivity.class);
-        startActivity(info);
+    public void onClickHighscore(View view) {
+        Intent highscoreList = new Intent(this, HighscoreActivity.class);
+        startActivity(highscoreList);
+    }
+
+    public void onClickInfo(View view) {
+        Intent spielInfo = new Intent(this, InfoActivity.class);
+        startActivity(spielInfo);
     }
 
 }

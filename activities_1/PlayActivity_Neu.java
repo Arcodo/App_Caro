@@ -1,5 +1,6 @@
 package com.example.admin.fingertwister;
 
+import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,14 +14,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SinglePlayerActivity extends AppCompatActivity implements View.OnTouchListener {
+public class PlayActivity extends AppCompatActivity implements View.OnTouchListener {
 
     // Viewobjekte
     private Button zurueck;
-    private Button neuerZug;
-    private TextView fingerText;
-    private TextView farbeText;
-    private TextView zuganzahlText;
+    private Button spielStarten;
+    private TextView aktuellerFinger;
+    private TextView aktuelleFarbe;
+    private TextView anzahlZuege;
 
     // Bild-Arrays für die einzelnen Felder des Spielfeldes
     // grüne Felder
@@ -55,12 +56,13 @@ public class SinglePlayerActivity extends AppCompatActivity implements View.OnTo
     private int positionKleinerFinger;
     private int hoehe;
     private int breite;
+    private boolean spielVerloren;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_single_player);
+        setContentView(R.layout.activity_play);
 
         // Variablen den Wert zuweisen
         /* der Variable 'farbwahl' wird hier der Wert 9 zugewiesen um in der Methode 'checkTask'
@@ -77,13 +79,14 @@ public class SinglePlayerActivity extends AppCompatActivity implements View.OnTo
         positionKleinerFinger = 0;
         hoehe = 0;
         breite = 0;
+        spielVerloren = false;
 
         // Referenzen auf Viewobjekte zuweisen
         zurueck = (Button) findViewById(R.id.zurueck);
-        neuerZug = (Button) findViewById(R.id.neuerZug);
-        fingerText = (TextView) findViewById(R.id.fingerText);
-        farbeText = (TextView) findViewById(R.id.farbeText);
-        zuganzahlText = (TextView) findViewById(R.id.zuganzahlText);
+        spielStarten = (Button) findViewById(R.id.spielStarten);
+        aktuellerFinger = (TextView) findViewById(R.id.aktuellerFinger);
+        aktuelleFarbe = (TextView) findViewById(R.id.aktuelleFarbe);
+        anzahlZuege = (TextView) findViewById(R.id.anzahlZuege);
 
         // Zufallsgenerator zuweisen
         generator = new Random();
@@ -148,7 +151,7 @@ public class SinglePlayerActivity extends AppCompatActivity implements View.OnTo
     // zählt Anzahl der Züge mit und gibt diese in der TextView "zuganzahlText" aus
     public void newMoveNumber() {
         zuege = zuege + 1;
-        zuganzahlText.setText("Anzahl der Züge: " + zuege);
+        anzahlZuege.setText("Anzahl der Züge: " + zuege);
     }
 
     // diese Methode ruf die beiden Methoden newFinger() und newColour() auf, in denen per
@@ -157,7 +160,7 @@ public class SinglePlayerActivity extends AppCompatActivity implements View.OnTo
     public void newTask() {
         newFinger();
         newColour();
-        starteCountDown();
+        startCountDown();
         makeButtonInvisible();
     }
 
@@ -165,20 +168,20 @@ public class SinglePlayerActivity extends AppCompatActivity implements View.OnTo
     // in der TextView "fingerText" ausgegeben
     public void newFinger() {
         fingerwahl = generator.nextInt(5);
-        fingerText.setText(finger[fingerwahl] + "       auf");
+        aktuellerFinger.setText(finger[fingerwahl] + "       auf");
     }
 
     // mit Hilfe des Zufallsgenerators wird die Farbe für den nächsten Zug bestimmt und
     // in der TextView "farbeText" ausgegeben
     public void newColour() {
         farbwahl = generator.nextInt(4);
-        farbeText.setText(farbe[farbwahl]);
+        aktuelleFarbe.setText(farbe[farbwahl]);
     }
 
     /* Diese Methode startet einen Count-Down von 2 Sekunden der, wenn diese Zeit abgelaufen ist,
     ohne das die richtige Taste gedrückt wurde, das Spiel beendet. Der Timer wurde eingeführt,
     um die Schwierigkeit des Spiels im Einzelspieler-Modus zu steigern. */
-    public void starteCountDown() {
+    public void startCountDown() {
         timer = new CountDownTimer(10000, 3) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -186,7 +189,7 @@ public class SinglePlayerActivity extends AppCompatActivity implements View.OnTo
 
             @Override
             public void onFinish() {
-                makeToast2();
+                gameOver();
             }
         }.start();
     }
@@ -194,12 +197,13 @@ public class SinglePlayerActivity extends AppCompatActivity implements View.OnTo
     public void cancelTimer() {
         timer.cancel();
         newTask();
+        newMoveNumber();
     }
 
     // Diese Methode deaktiviert den Butten 'neuerZug', sodass er von Spieler nciht mehr manuell
     // betätigt werden kann.
     public void makeButtonInvisible() {
-        neuerZug.setEnabled(false);
+        spielStarten.setEnabled(false);
     }
 
     // OnTouchListener für die Tasten des Spielfeldes
@@ -397,13 +401,12 @@ public class SinglePlayerActivity extends AppCompatActivity implements View.OnTo
 
     // überprüft, ob das gedrückte Feld die in diesem Spielzug angezeigte Farbe hat
     public void checkActionDown(String farbeFeld, int idFeld) {
-        Toast.makeText(SinglePlayerActivity.this, "Methode 'checkActionDown'", Toast.LENGTH_SHORT).show();
         if(checkTask() == true) {
             if(farbeFeld == farbe[farbwahl]) {
                 saveFingerPosition(finger[fingerwahl], idFeld);
             }
             else {
-                makeToast2();
+                gameOver();
             }
         }
         else {
@@ -414,7 +417,6 @@ public class SinglePlayerActivity extends AppCompatActivity implements View.OnTo
     // überprüft, ob die Taste neuer Zug bereits einmal betätigt wurde, d.h. ob im dem Moment,
     // in dem eine Taste gedrückt wird, überhaupt schon eine Spielanweisung besteht
     public boolean checkTask() {
-        Toast.makeText(SinglePlayerActivity.this, "Methode 'checkTask'", Toast.LENGTH_SHORT).show();
         if(farbwahl == 9) {
             return false;
         }
@@ -425,7 +427,6 @@ public class SinglePlayerActivity extends AppCompatActivity implements View.OnTo
 
     // in den Variablen wird gespeichert, welcher Finger gerade welche Taste gedrückt hält
     public void saveFingerPosition(String benutzterFinger, int idFeld) {
-        Toast.makeText(SinglePlayerActivity.this, "Methode 'saveFingerPosition'", Toast.LENGTH_SHORT).show();
         if (benutzterFinger == finger[0]) {
             positionDaumen = idFeld;
         }
@@ -455,54 +456,54 @@ public class SinglePlayerActivity extends AppCompatActivity implements View.OnTo
     zugewiesen wurde oder ob noch gar kein Spielzug erzeugt wurde. Wenn noch kein Spielzug durch die
     Betätigung der Taste 'nächster Zug' erzeugt wurde, ist der Wert der Variable farbwahl 9. */
     public boolean checkActionUp(int idFeld) {
-        Toast.makeText(SinglePlayerActivity.this, "Methode 'checkActionUp'", Toast.LENGTH_SHORT).show();
         if(farbwahl == 9) {
-            makeToast3();
             return true;
         }
         if(idFeld == positionDaumen && finger[0] == finger[fingerwahl]) {
-            makeToast3();
             return true;
         }
         if(idFeld == positionZeigefinger && finger[1] == finger[fingerwahl]) {
-            makeToast3();
             return true;
         }
         if(idFeld == positionMittelfinger && finger[2] == finger[fingerwahl]) {
-            makeToast3();
             return true;
         }
         if(idFeld == positionRingfinger && finger[3] == finger[fingerwahl]) {
-            makeToast3();
             return true;
         }
         if(idFeld == positionKleinerFinger && finger[4] == finger[fingerwahl]) {
-            makeToast3();
             return true;
         }
         else {
-            makeToast2();
+            gameOver();
             return false;
         }
     }
 
     public void makeToastNoTask() {
-        Toast.makeText(SinglePlayerActivity.this, "Es gibt noch keine Aufgabe. Betätige die Taste" +
+        Toast.makeText(PlayActivity.this, "Es gibt noch keine Aufgabe. Betätige die Taste" +
                 " 'neuer Zug' um eine Spielanweisung zu erhalten!", Toast.LENGTH_SHORT).show();
     }
 
-    public void makeToast2() {
-        Toast.makeText(SinglePlayerActivity.this, "Verloren! Spiel ist vorbei.",
-                Toast.LENGTH_SHORT).show();
+    /* Methode 'addToHighscoreList' soll nur vom ersten Zug, der das Spiel beendet aufgerufen werden
+    und nicht auch noch von jedem weitern Finger, der nachdem das Spiel ja bereits verloren wurde
+    eine gedrückte Taste unberechtigt loslässt. Denn ansonsten würden mehrere identsche Intents
+    erzeugt werden. */
+    public void gameOver() {
+        if(spielVerloren == false) {
+            spielVerloren = true;
+            addToHighscoreList();
+        }
     }
 
-    public void makeToast3() {
-        Toast.makeText(SinglePlayerActivity.this, "Taste berechtigt losgelassen!",
-                Toast.LENGTH_SHORT).show();
+    public void addToHighscoreList() {
+        Intent spielVorbei = new Intent(this, GameOverActivity.class);
+        spielVorbei.putExtra("zuege",zuege);
+        startActivity(spielVorbei);
     }
 
-    // durch Buttonklick wird die SinglePlayerActivty geschlossen
-    // der User findet sich auf der PlayModeActivity wieder
+    // durch Buttonklick wird die PlayActivty geschlossen
+    // der User findet sich auf der MainActivity wieder
     public void onClickBack (View view) {
         finish();
     }
