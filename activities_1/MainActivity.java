@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickStartGame(View view) {
-        Intent spielStarten = new Intent(this, PlayActivity.class);
-        startActivity(spielStarten);
+        Intent einstellungen = new Intent(this, SettingActivity.class);
+        startActivity(einstellungen);
     }
 
     public void onClickHighscore(View view) {
