@@ -154,8 +154,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 kreisArray[i].setOnTouchListener(this);
                 // die hier zugewiesenen Höhen und Breiten der Bilder überschreiben die in der
                 // zugehörigen xml-Datei zugewiesenen Werte
-                kreisArray[i].getLayoutParams().height = groesseKreis; //80, 220
-                kreisArray[i].getLayoutParams().width = groesseKreis; // 80, 220
+                kreisArray[i].getLayoutParams().height = groesseKreis;
+                kreisArray[i].getLayoutParams().width = groesseKreis;
             }
         }
     }
@@ -167,13 +167,13 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         newMoveNumber();
     }
 
-    // zählt Anzahl der Züge mit und gibt diese in der TextView "zuganzahlText" aus
+    /**
+     * zählt Anzahl der Züge mit und gibt diese in der TextView "zuganzahlText" aus.
+     */
     public void newMoveNumber() {
         zuege = zuege + 1;
-        anzahlZuege.setText("Anzahl der Züge: " + zuege);
+        anzahlZuege.setText("Anzahl der Züge:      " + zuege);
     }
-
-    // diese Methode
 
     /**
      * ruf die beiden Methoden newFinger() und newColour() auf, in denen per Zufallsprinzip der
@@ -245,6 +245,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     // ausgeführt werden kann.
     /**
      *
+     *
      * @param view
      * @param event
      * @return
@@ -254,245 +255,384 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             // grüne Tasten
             case R.id.gruen1:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[0], R.id.gruen1, event, xGruen[0], yGruen[0]);
+                    xGruen[0] = event.getX();
+                    yGruen[0] = event.getY();
+                    checkActionDown(farbe[0], R.id.gruen1);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xGruen[0], yGruen[0]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xGruen[0] + (groesseKreis/2) ||
+                                event.getY() > yGruen[0] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.gruen1, xGruen[0], yGruen[0]);
+                    checkActionUp(R.id.gruen1);
                 }
                 break;
             case R.id.gruen2:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[0], R.id.gruen2, event, xGruen[1], yGruen[1]);
+                    xGruen[1] = event.getX();
+                    yGruen[1] = event.getY();
+                    checkActionDown(farbe[0], R.id.gruen2);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xGruen[1], yGruen[1]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xGruen[1] + (groesseKreis/2) ||
+                                event.getY() > yGruen[1] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.gruen2, xGruen[1], yGruen[1]);
+                    checkActionUp(R.id.gruen2);
                 }
                 break;
             case R.id.gruen3:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[0], R.id.gruen3, event, xGruen[2], yGruen[2]);
+                    xGruen[2] = event.getX();
+                    yGruen[2] = event.getY();
+                    checkActionDown(farbe[0], R.id.gruen3);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xGruen[2], yGruen[2]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xGruen[2] + (groesseKreis/2) ||
+                                event.getY() > yGruen[2] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.gruen3, xGruen[2], yGruen[2]);
+                    checkActionUp(R.id.gruen3);
                 }
                 break;
             case R.id.gruen4:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[0], R.id.gruen4, event, xGruen[3], yGruen[3]);
+                    xGruen[3] = event.getX();
+                    yGruen[3] = event.getY();
+                    checkActionDown(farbe[0], R.id.gruen4);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xGruen[3], yGruen[3]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xGruen[3] + (groesseKreis/2) ||
+                                event.getY() > yGruen[3] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.gruen4, xGruen[3], yGruen[3]);
+                    checkActionUp(R.id.gruen4);
                 }
                 break;
             case R.id.gruen5:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[0], R.id.gruen5, event, xGruen[4], yGruen[4]);
+                    xGruen[4] = event.getX();
+                    yGruen[4] = event.getY();
+                    checkActionDown(farbe[0], R.id.gruen5);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xGruen[4], yGruen[4]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xGruen[4] + (groesseKreis/2) ||
+                                event.getY() > yGruen[4] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.gruen5, xGruen[4], yGruen[4]);
+                    checkActionUp(R.id.gruen5);
                 }
                 break;
             // gelbe Tasten
             case R.id.gelb1:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[1], R.id.gelb1, event, xGelb[0], yGelb[0]);
+                    xGelb[0] = event.getX();
+                    yGelb[0] = event.getY();
+                    checkActionDown(farbe[1], R.id.gelb1);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xGelb[0], yGelb[0]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xGelb[0] + (groesseKreis/2) ||
+                                event.getY() > yGelb[0] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.gelb1, xGelb[0], yGelb[0]);
+                    checkActionUp(R.id.gelb1);
                 }
                 break;
             case R.id.gelb2:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[1], R.id.gelb2, event, xGelb[1], yGelb[1]);
+                    xGelb[1] = event.getX();
+                    yGelb[1] = event.getY();
+                    checkActionDown(farbe[1], R.id.gelb2);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xGelb[0], yGelb[0]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xGelb[1] + (groesseKreis/2) ||
+                                event.getY() > yGelb[1] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.gelb2, xGelb[1], yGelb[11]);
+                    checkActionUp(R.id.gelb2);
                 }
                 break;
             case R.id.gelb3:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[1], R.id.gelb3, event, xGelb[2], yGelb[2]);
+                    xGelb[2] = event.getX();
+                    yGelb[2] = event.getY();
+                    checkActionDown(farbe[1], R.id.gelb3);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xGelb[0], yGelb[0]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xGelb[2] + (groesseKreis/2) ||
+                                event.getY() > yGelb[2] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.gelb3, xGelb[2], yGelb[2]);
+                    checkActionUp(R.id.gelb3);
                 }
                 break;
             case R.id.gelb4:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[1], R.id.gelb4, event, xGelb[3], yGelb[3]);
+                    xGelb[3] = event.getX();
+                    yGelb[3] = event.getY();
+                    checkActionDown(farbe[1], R.id.gelb4);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xGelb[3], yGelb[3]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xGelb[3] + (groesseKreis/2) ||
+                                event.getY() > yGelb[3] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.gelb4, xGelb[3], yGelb[3]);
+                    checkActionUp(R.id.gelb4);
                 }
                 break;
             case R.id.gelb5:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[1], R.id.gelb5, event, xGelb[4], yGelb[4]);
+                    xGelb[4] = event.getX();
+                    yGelb[4] = event.getY();
+                    checkActionDown(farbe[1], R.id.gelb5);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xGelb[4], yGelb[4]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xGelb[4] + (groesseKreis/2) ||
+                                event.getY() > yGelb[4] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.gelb5, xGelb[4], yGelb[4]);
+                    checkActionUp(R.id.gelb5);
                 }
                 break;
             // blaue Tasten
             case R.id.blau1:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[2], R.id.blau1, event, xBlau[0], yBlau[0]);
+                    xBlau[0] = event.getX();
+                    yBlau[0] = event.getY();
+                    checkActionDown(farbe[2], R.id.blau1);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xBlau[0], yBlau[0]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xBlau[0] + (groesseKreis/2) ||
+                                event.getY() > yBlau[0] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.blau1, xBlau[0], yBlau[0]);
+                    checkActionUp(R.id.blau1);
                 }
                 break;
             case R.id.blau2:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[2], R.id.blau2, event, xBlau[1], yBlau[1]);
+                    xBlau[1] = event.getX();
+                    yBlau[1] = event.getY();
+                    checkActionDown(farbe[2], R.id.blau2);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xBlau[1], yBlau[1]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xBlau[1] + (groesseKreis/2) ||
+                                event.getY() > yBlau[1] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.blau2, xBlau[1], yBlau[1]);
+                    checkActionUp(R.id.blau2);
                 }
                 break;
             case R.id.blau3:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[2], R.id.blau3, event, xBlau[2], yBlau[2]);
+                    xBlau[2] = event.getX();
+                    yBlau[2] = event.getY();
+                    checkActionDown(farbe[2], R.id.blau3);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xBlau[2], yBlau[2]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xBlau[2] + (groesseKreis/2) ||
+                                event.getY() > yBlau[2] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.blau3, xBlau[2], yBlau[2]);
+                    checkActionUp(R.id.blau3);
                 }
                 break;
             case R.id.blau4:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[2], R.id.blau4, event, xBlau[3], yBlau[3]);
+                    xBlau[3] = event.getX();
+                    yBlau[3] = event.getY();
+                    checkActionDown(farbe[2], R.id.blau4);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xBlau[3], yBlau[3]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xBlau[3] + (groesseKreis/2) ||
+                                event.getY() > yBlau[3] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.blau4, xBlau[3], yBlau[3]);
+                    checkActionUp(R.id.blau4);
                 }
                 break;
             case R.id.blau5:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[2], R.id.blau5, event, xBlau[4], yBlau[4]);
+                    xBlau[4] = event.getX();
+                    yBlau[4] = event.getY();
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xBlau[4], yBlau[4]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xBlau[4] + (groesseKreis/2) ||
+                                event.getY() > yBlau[4] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.blau5, xBlau[4], yBlau[4]);
+                    checkActionUp(R.id.blau5);
                 }
                 break;
             // rote Tasten
             case R.id.rot1:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[3], R.id.rot1, event, xRot[0], yRot[0]);
+                    xRot[0] = event.getX();
+                    yRot[0] = event.getY();
+                    checkActionDown(farbe[3], R.id.rot1);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xRot[0], yRot[0]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xRot[0] + (groesseKreis/2) ||
+                                event.getY() > yRot[0] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.rot1, xBlau[0], yBlau[0]);
+                    checkActionUp(R.id.rot1);
                 }
                 break;
             case R.id.rot2:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[3], R.id.rot2, event, xRot[1], yRot[1]);
+                    xRot[1] = event.getX();
+                    yRot[1] = event.getY();
+                    checkActionDown(farbe[3], R.id.rot2);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xRot[1], yRot[1]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xRot[1] + (groesseKreis/2) ||
+                                event.getY() > yRot[1] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.rot2, xRot[1], yRot[1]);
+                    checkActionUp(R.id.rot2);
                 }
                 break;
             case R.id.rot3:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[3], R.id.rot3, event, xRot[2], yRot[2]);
+                    xRot[2] = event.getX();
+                    yRot[2] = event.getY();
+                    checkActionDown(farbe[3], R.id.rot3);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xRot[2], yRot[2]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xRot[2] + (groesseKreis/2) ||
+                                event.getY() > yRot[2] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.rot3, xRot[2], yRot[2]);
+                    checkActionUp(R.id.rot3);
                 }
                 break;
             case R.id.rot4:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[3], R.id.rot4, event, xRot[3], yRot[3]);
+                    xRot[3] = event.getX();
+                    yRot[3] = event.getY();
+                    checkActionDown(farbe[3], R.id.rot4);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xRot[3], yRot[3]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xRot[3] + (groesseKreis/2) ||
+                                event.getY() > yRot[3] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.rot4, xRot[3], yRot[3]);
+                    checkActionUp(R.id.rot4);
                 }
                 break;
             case R.id.rot5:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    checkActionDown(farbe[3], R.id.rot5, event, xRot[4], yRot[4]);
+                    xRot[4] = event.getX();
+                    yRot[4] = event.getY();
+                    checkActionDown(farbe[3], R.id.rot5);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    extentOfMove(event, xRot[4], yRot[4]);
+                    if(farbwahl != 9) {
+                        if(event.getX() > xRot[4] + (groesseKreis/2) ||
+                                event.getY() > yRot[4] + (groesseKreis/2)) {
+                            gameOver();
+                        }
+                    }
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    checkActionUp(R.id.rot5, xRot[4], yRot[4]);
+                    checkActionUp(R.id.rot5);
                 }
                 break;
         }
@@ -504,15 +644,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
      *
      * @param farbeFeld
      * @param idFeld
-     * @param event
-     * @param xKoordinate
-     * @param yKoordinate
      */
-    public void checkActionDown(String farbeFeld, int idFeld, MotionEvent event,
-                                float xKoordinate, float yKoordinate) {
+    public void checkActionDown(String farbeFeld, int idFeld) {
         if(checkTask() == true) {
             if(farbeFeld == farbe[farbwahl]) {
-                saveCoordinates(event, xKoordinate, yKoordinate);
                 saveFingerPosition(finger[fingerwahl], idFeld);
             }
             else {
@@ -537,19 +672,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         else {
             return true;
         }
-    }
-
-    /**
-     * weist den Variablen "xKoordinate" und "yKoordinate" jeweils die x- bzw die y-Koordinate des
-     * MotionEvents "event", d.h. der Bildschrimberührung, zu.
-     *
-     * @param event
-     * @param xKoordinate
-     * @param yKoordinate
-     */
-    public void saveCoordinates(MotionEvent event, float xKoordinate, float yKoordinate) {
-        xKoordinate = event.getX();
-        yKoordinate = event.getY();
     }
 
     /**
@@ -579,21 +701,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     /**
-     * überprüft, das Ausmaß der Bewegung des MotionEvents "event", d.h. der Bildschrimkontakt
-     * noch innerhalb des jeweiligen Feldes liegt.
-     *
-     * @param event
-     * @param xKoordinate
-     * @param yKoordinate
-     */
-    public void extentOfMove(MotionEvent event, float xKoordinate, float yKoordinate) {
-        if(event.getX() > xKoordinate + (groesseKreis/2) ||
-                event.getY() > yKoordinate + (groesseKreis/2)) {
-            gameOver();
-        }
-    }
-
-    /**
      * überprüft, ob das Loslassen des Feldes berechtigt war, d.h. ob der neue Spielzug den Spieler
      * anweist, den Finger, welcher zuvor dieses Feld gedückt hielt, nun auf ein anderes Feld zu
      * setzen.
@@ -608,32 +715,25 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
      * der Variable farbwahl 9.
      *
      * @param idFeld
-     * @param xKoordinate
-     * @param yKoordinate
      * @return
      */
-    public boolean checkActionUp(int idFeld, float xKoordinate, float yKoordinate) {
+    public boolean checkActionUp(int idFeld) {
         if(farbwahl == 9) {
             return true;
         }
         if(idFeld == positionDaumen && finger[0] == finger[fingerwahl]) {
-            resetCoordinates(xKoordinate, yKoordinate);
             return true;
         }
         if(idFeld == positionZeigefinger && finger[1] == finger[fingerwahl]) {
-            resetCoordinates(xKoordinate, yKoordinate);
             return true;
         }
         if(idFeld == positionMittelfinger && finger[2] == finger[fingerwahl]) {
-            resetCoordinates(xKoordinate, yKoordinate);
             return true;
         }
         if(idFeld == positionRingfinger && finger[3] == finger[fingerwahl]) {
-            resetCoordinates(xKoordinate, yKoordinate);
             return true;
         }
         if(idFeld == positionKleinerFinger && finger[4] == finger[fingerwahl]) {
-            resetCoordinates(xKoordinate, yKoordinate);
             return true;
         }
         else {
@@ -648,16 +748,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     public void makeToastNoTask() {
         Toast.makeText(PlayActivity.this, "Es gibt noch keine Aufgabe. Betätige die Taste" +
                 " 'neuer Zug' um eine Spielanweisung zu erhalten!", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     *
-     * @param xKoordinate
-     * @param yKoordinate
-     */
-    public void resetCoordinates(float xKoordinate, float yKoordinate) {
-        xKoordinate = 0;
-        yKoordinate = 0;
     }
 
     /**

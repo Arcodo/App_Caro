@@ -40,12 +40,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Anzahl der Züge: "
+        android:text="Anzahl der Züge:"
         android:id="@+id/anzahlZuege"
         android:textSize="20dp"
         android:layout_marginTop="34dp"
         android:layout_below="@+id/aktuellerFinger"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentLeft="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -58,162 +58,180 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <TableLayout
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/anzahlZuege"
         android:layout_above="@+id/zurueck"
-        android:stretchColumns="1">
+        android:layout_below="@id/anzahlZuege"
+        android:layout_centerVertical="true" >
 
-        <TableRow
-            android:layout_width="0dp"
-            android:layout_height="0dp" >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/zuganzahlText"
+            android:layout_toStartOf="@+id/zuganzahlText"
+            android:layout_above="@+id/zurueck"
+            android:layout_below="@+id/zuganzahlText"
+            android:id="@+id/linearLayout1">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/gruen1"
                 android:src="@drawable/gruen" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/gelb1"
-                android:src="@drawable/gelb" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/blau1"
-                android:src="@drawable/blau" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/rot1"
-                android:src="@drawable/rot" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="0dp"
-            android:layout_height="0dp" >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/gruen2"
                 android:src="@drawable/gruen" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/gelb2"
-                android:src="@drawable/gelb" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/blau2"
-                android:src="@drawable/blau"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/rot2"
-                android:src="@drawable/rot" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="0dp"
-            android:layout_height="0dp" >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/gruen3"
                 android:src="@drawable/gruen" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/gelb3"
-                android:src="@drawable/gelb" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/blau3"
-                android:src="@drawable/blau" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/rot3"
-                android:src="@drawable/rot" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="0dp"
-            android:layout_height="0dp" >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/gruen4"
                 android:src="@drawable/gruen" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/gruen5"
+                android:src="@drawable/gruen" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/linearLayout1"
+            android:layout_toLeftOf="@+id/startButton"
+            android:layout_toStartOf="@+id/startButton"
+            android:layout_above="@+id/zurueck"
+            android:layout_below="@+id/zuganzahlText"
+            android:id="@+id/linearLayout2">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/gelb1"
+                android:src="@drawable/gelb" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/gelb2"
+                android:src="@drawable/gelb" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/gelb3"
+                android:src="@drawable/gelb" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/gelb4"
                 android:src="@drawable/gelb" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/gelb5"
+                android:src="@drawable/gelb" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/linearLayout2"
+            android:layout_toLeftOf="@+id/linearLayout4"
+            android:layout_above="@+id/startButton"
+            android:layout_below="@+id/zuganzahlText"
+            android:id="@+id/linearLayout3">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/blau1"
+                android:src="@drawable/blau" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/blau2"
+                android:src="@drawable/blau" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/blau3"
+                android:src="@drawable/blau" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/blau4"
                 android:src="@drawable/blau" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/rot4"
-                android:src="@drawable/rot" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="0dp"
-            android:layout_height="0dp" >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/gruen5"
-                android:src="@drawable/gruen" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/gelb5"
-                android:src="@drawable/gelb"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/blau5"
                 android:src="@drawable/blau" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/zuganzahlText"
+            android:layout_toEndOf="@+id/zuganzahlText"
+            android:layout_above="@+id/startButton"
+            android:layout_below="@+id/zuganzahlText"
+            android:id="@+id/linearLayout4">
+
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/rot1"
+                android:src="@drawable/rot" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/rot2"
+                android:src="@drawable/rot" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/rot3"
+                android:src="@drawable/rot" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/rot4"
+                android:src="@drawable/rot" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/rot5"
                 android:src="@drawable/rot" />
-        </TableRow>
-    </TableLayout>
-
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -18,6 +17,7 @@ public class SettingActivity extends AppCompatActivity {
     private Button weiter;
     private Spinner groesseWaehlen;
     private String gewaehlteGroesse;
+    private String[] auswahl;
     private int groesseSpielfeld;
 
 
@@ -30,7 +30,11 @@ public class SettingActivity extends AppCompatActivity {
         zurueck = (Button) findViewById(R.id.zurueck);
         weiter = (Button) findViewById(R.id.weiter);
         groesseWaehlen = (Spinner) findViewById(R.id.spinner);
-        String[] auswahl = {"klein", "mittel", "groß"};
+
+        auswahl = new String[3];
+        auswahl[0] = "klein";
+        auswahl[1] = "mittel";
+        auswahl[2] = "groß";
 
         anweisung.setText("Wählen Sie hier die Größe des Spielfeldes aus und drücken Sie danach " +
                 "auf 'Weiter', um das Spiel zu starten. Sie sollten die Größe des Spielfeldes von " +
@@ -50,15 +54,15 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     public void onClickNext(View view) {
-        if(gewaehlteGroesse == "klein") {
+        if(gewaehlteGroesse == auswahl[0]) {
             groesseSpielfeld = 80;
             startGame();
         }
-        if(gewaehlteGroesse == "mittel") {
+        if(gewaehlteGroesse == auswahl[1]) {
             groesseSpielfeld = 170;
             startGame();
         }
-        if(gewaehlteGroesse == "groß") {
+        if(gewaehlteGroesse == auswahl[2]) {
             groesseSpielfeld = 250;
             startGame();
         }
