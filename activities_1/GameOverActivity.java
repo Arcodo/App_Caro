@@ -7,14 +7,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GameOverActivity extends AppCompatActivity {
 
     private Button speichern;
+    private Button abbrechen;
     private TextView erreichtePunkte;
     private EditText nameSpieler;
     private int spielstand;
     private String name;
+
+    private Intent highscore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +26,11 @@ public class GameOverActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game_over);
 
         speichern = (Button) findViewById(R.id.speichern);
+        abbrechen = (Button) findViewById(R.id.abbrechen);
         erreichtePunkte = (TextView) findViewById(R.id.erreichtePunkte);
         nameSpieler = (EditText) findViewById(R.id.nameSpieler);
+
+        highscore = new Intent(this, HighscoreActivity.class);
 
         Intent i = getIntent();
         spielstand = i.getIntExtra("zuege", 0);
@@ -35,10 +42,25 @@ public class GameOverActivity extends AppCompatActivity {
     }
 
     public void onClickSave(View view) {
-        name = nameSpieler.getText().toString();
-        Intent highscore = new Intent(this, HighscoreActivity.class);
-        highscore.putExtra("zuege", spielstand);
-        highscore.putExtra("name", name);
-        startActivity(highscore);
+        if(nameSpieler.getText().toString().isEmpty() == true) {
+            makeToastNoEntry();
+        }
+        else {
+            name = nameSpieler.getText().toString();
+            highscore.putExtra("zuege", spielstand);
+            highscore.putExtra("name", name);
+            setResult(3, highscore);
+            finish();
+        }
+    }
+
+    public void makeToastNoEntry() {
+        Toast.makeText(GameOverActivity.this, "Geben Sie Ihren Namen ein oder drücken Sie "
+                + "'Abbrechen', wenn Sie Ihren Spielstand nicht in die Highscore-Liste hinzufügen "
+                + "möchten!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onClickCancel(View view) {
+        finish();
     }
 }

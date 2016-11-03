@@ -16,11 +16,12 @@ import java.util.Collections;
 public class HighscoreActivity extends AppCompatActivity {
 
     private ListView listView;
-    private Score score;
     private DatabaseHandler dbh;
     private ArrayList<Score> scoreList;
     private String[] spieldaten;
     private ListAdapter adapter;
+    private Score scoreNeu;
+    private Score score;
     private int punkte;
     private String name;
 
@@ -29,52 +30,75 @@ public class HighscoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_highscore);
 
-        this.addScore();
-
         // Den Handler für den Zugriff auf die Datenbank erstellen.
         dbh = new DatabaseHandler(this);
 
-        // scoreList = dbh.getScores();
-        // Collections.sort(scoreList);
+        listView = (ListView) findViewById(R.id.listView);
 
-        spieldaten = new String[10];
+        spieldaten = new String[11];
 
         adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, spieldaten);
-
-        listView = (ListView) findViewById(R.id.listView);
 
         Intent i = getIntent();
         punkte = i.getIntExtra("zuege", 0);
         name = i.getStringExtra("name");
 
+        this.addScore();
+
+        scoreList = dbh.getScores();
+        Collections.sort(scoreList);
+
+        checkTableSize();
+
         this.printTable();
     }
 
     public void addScore() {
-        score = new Score(name, punkte);
-        dbh.addScore(score);
-        Log.d("addSave", "Score gespeichert: " + score.toString());
+        if(name != null) {
+            scoreNeu = new Score(name, punkte);
+            dbh.addScore(scoreNeu);
+        }
     }
 
-    // scores.get(0) gibt erstes Element der Array-List aus
+    public void checkTableSize() {
+        if(scoreList.size() > 10) {
+            for (int i = scoreList.size()-1; i > 10; i--) {
+                score = dbh.getScore(i);
+                dbh.deleteScore(score);
+            }
+        }
+    }
+
+    // Info für mich: scores.get(0) gibt erstes Element der Array-List aus
     // scores.get(0).getName() gibt nue namen aus
     private void printTable() {
-        if (scoreList.size() == 0) {
+        if(scoreList.size() == 0) {
             makeToastEmptyTable();
         }
+        if(scoreList.size() > 10) {
+            for (int i = scoreList.size()-1; i > 10; i--) {
+                score = dbh.getScore(i);
+                dbh.deleteScore(score);
+            }
+        }
         else {
-            for (int i = 0; i < scoreList.size(); i++) {
-                spieldaten[i] = (i + 1) + " " + scoreList.get(i).getName() + " "
-                        + scoreList.get(i).getPoints() /*+ "\n"*/ ;
+            for(int i = 0; i < scoreList.size(); i++) {
+                spieldaten[i] = (i + 1) + "   Spieler: " + scoreList.get(i).getName() +
+                        "   Punkte: " + scoreList.get(i).getPoints();
             }
             listView.setAdapter(adapter);
         }
     }
 
     public void makeToastEmptyTable() {
-        Toast.makeText(HighscoreActivity.this, "Die Highscore-Table ist noch leer!",
+        Toast.makeText(HighscoreActivity.this, "Die Highscore-Table ist leer!",
                 Toast.LENGTH_SHORT).show();
+    }
+
+    public void onClickDelet(View view) {
+        dbh.deleteAll();
+        finish();
     }
 
     /** ofiofero.
@@ -83,7 +107,7 @@ public class HighscoreActivity extends AppCompatActivity {
      *
      * @param view
      */
-    public void onClickBack (View view) {
+    public void onClickBack(View view) {
         finish();
     }
 

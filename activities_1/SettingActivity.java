@@ -18,7 +18,10 @@ public class SettingActivity extends AppCompatActivity {
     private Spinner groesseWaehlen;
     private String gewaehlteGroesse;
     private String[] auswahl;
+    private ArrayAdapter<String> stringArrayAdapter;
     private int groesseSpielfeld;
+
+    private Intent spielStarten;
 
 
     @Override
@@ -31,6 +34,8 @@ public class SettingActivity extends AppCompatActivity {
         weiter = (Button) findViewById(R.id.weiter);
         groesseWaehlen = (Spinner) findViewById(R.id.spinner);
 
+        spielStarten = new Intent(this, PlayActivity.class);
+
         auswahl = new String[3];
         auswahl[0] = "klein";
         auswahl[1] = "mittel";
@@ -40,7 +45,7 @@ public class SettingActivity extends AppCompatActivity {
                 "auf 'Weiter', um das Spiel zu starten. Sie sollten die Größe des Spielfeldes von " +
                 "der Größe Ihres Bildschrims abhängig machen!");
 
-        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(this,
+        stringArrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item, auswahl);
         groesseWaehlen.setAdapter(stringArrayAdapter);
 
@@ -69,9 +74,9 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     public void startGame() {
-        Intent spielStarten = new Intent(this, PlayActivity.class);
         spielStarten.putExtra("groesseSpielfeld", groesseSpielfeld);
-        startActivity(spielStarten);
+        setResult(1, spielStarten);
+        finish();
     }
 
     public void onClickBack(View view) {

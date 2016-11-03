@@ -99,7 +99,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void deleteScore(Score s) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_SCORES, KEY_ID + "=?",
-                new String[]{String.valueOf(s.getId())});
+                new String[]{String.valueOf(s.getPoints())}); //getID
         db.close();
     }
 
@@ -135,28 +135,4 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
         return l;
     }
-
-    public int bestScore(String name) {
-        String query = "SELECT MAX(" + KEY_POINTS + ") FROM " + TABLE_SCORES
-                + " WHERE " + KEY_NAME + " = '" + name + "' GROUP BY "
-                + KEY_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(query, null);
-        int maxVal = -1;
-        if (c.moveToFirst()) {
-            maxVal = Integer.parseInt(c.getString(0));
-        }
-        c.close();
-        db.close();
-        return (maxVal);
-    }
-
-    public void deletePlayer(String name) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String sql = "DELETE FROM " + TABLE_SCORES + " WHERE " + KEY_NAME
-                + " = '" + name + "'";
-        db.execSQL(sql);
-        db.close();
-    }
-
 }

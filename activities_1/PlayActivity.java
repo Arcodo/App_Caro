@@ -14,7 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class PlayActivity extends AppCompatActivity implements View.OnTouchListener {
+public class PlayActivity extends AppCompatActivity implements View.OnTouchListener{
 
     // Viewobjekte
     private Button zurueck;
@@ -53,7 +53,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     // Objekte aus Java Paket
     private Random generator;
+
+    //
     private CountDownTimer timer;
+    private Intent spielVorbei;
 
     // Variablen
     private int fingerwahl;
@@ -86,7 +89,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         positionRingfinger = 0;
         positionKleinerFinger = 0;
         spielVerloren = false;
-        groesseKreis = 220;
+        groesseKreis = 0;
 
         // Referenzen auf Viewobjekte zuweisen
         zurueck = (Button) findViewById(R.id.zurueck);
@@ -97,6 +100,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         // Zufallsgenerator zuweisen
         generator = new Random();
+
+        // Referenz auf Intent zuweisen
+        spielVorbei = new Intent(this, GameOverActivity.class);
 
         // Arrays für einzelne Felder des Spielfeldes und deren Koordinaten zuweisen
         grueneKreise = new ImageView[5];
@@ -140,8 +146,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         farbe[3] = "rot";
 
         // Inhalt des Intents wird der Variable "groesseKreis" zugewiesen
-        Intent intent = getIntent();
-        groesseKreis = intent.getIntExtra("groesseSpielfeld", 0);
+        Intent kreismas = getIntent();
+        groesseKreis = kreismas.getIntExtra("groesseSpielfeld", 0);
 
         // Farbe, Id und OnTouchListener für die einzelnen Felder des Spielfeldes zuweisen, wobei
         // dem ImageView-Array "kreisArray" bei jedem Durchlauf der ersten for-Schleife ein neuer
@@ -206,12 +212,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     /**
-     * startet einen Count-Down von 3 Sekunden der, wenn diese Zeit abgelaufen ist, ohne das die
+     * startet einen Count-Down von 5 Sekunden der, wenn diese Zeit abgelaufen ist, ohne das die
      * richtige Taste gedrückt wurde, das Spiel beendet. Der Timer wurde eingeführt, um die
      * Schwierigkeit des Spiels zu steigern.
      */
     public void startCountDown() {
-        timer = new CountDownTimer(10000, 3) {
+        timer = new CountDownTimer(10000, 5) {
             @Override
             public void onTick(long millisUntilFinished) {
             }
@@ -771,9 +777,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
      *
      */
     public void addToHighscoreList() {
-        Intent spielVorbei = new Intent(this, GameOverActivity.class);
-        spielVorbei.putExtra("zuege",zuege);
-        startActivity(spielVorbei);
+        spielVorbei.putExtra("zuege", zuege);
+        setResult(2, spielVorbei);
+        finish();
     }
 
     /**
