@@ -19,7 +19,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="onClickDelet" />
+        android:onClick="onClickDelete" />
 
     <Button
         android:text="zurück"

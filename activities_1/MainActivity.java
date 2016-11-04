@@ -20,10 +20,9 @@ public class MainActivity extends AppCompatActivity {
     private Intent startPlayActivity;
     private Intent startGameOverAcivity;
     private Intent startHighscoreActivity;
+    private Intent startHighscoreActivityOhneUebergabe;
     private Intent startInfoActivity;
 
-    //
-    private DatabaseHandler dB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +40,8 @@ public class MainActivity extends AppCompatActivity {
         startPlayActivity = new Intent(this,PlayActivity.class);
         startGameOverAcivity = new Intent(this, GameOverActivity.class);
         startHighscoreActivity = new Intent(this, HighscoreActivity.class);
+        startHighscoreActivityOhneUebergabe = new Intent(this, HighscoreActivity.class);
         startInfoActivity = new Intent(this, InfoActivity.class);
-
-        // Referenz auf          zuweisen
-        dB = new DatabaseHandler(this);
     }
 
     public void onClickStartGame(View view) {
@@ -52,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickHighscore(View view) {
-        startActivityForResult(startHighscoreActivity, 4);
+        startActivityForResult(startHighscoreActivityOhneUebergabe, 4);
     }
 
     public void onClickInfo(View view) {

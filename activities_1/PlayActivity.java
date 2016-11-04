@@ -756,8 +756,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 " 'neuer Zug' um eine Spielanweisung zu erhalten!", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * beendet das Spiel, indem dem die Methode "addToHighscoreList" ausferufen wird.
+    /** beendet das Spiel, indem dem die Methode "addToHighscoreList" ausferufen wird.
      *
      * Hinweis: Diese Methode soll nur ein einziges mal ausgeführt werden, nämlich nur wenn das
      * erste Mal ein Fehler gemacht wird, der das Spile beendet. Um zu verhindern, dass zum
@@ -773,8 +772,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    /**
-     *
+    /** übergibt den Wert der Varaible "zuege" an das Intent "spielVorbei".
+     * ruft Methode "setResult()" mit Eingangsparametern "2" als resetCode und "spielVorbei" als
+     * Intent auf und springt dadurch in die Methode "onActivityresult" der MainActivity.
+     * beendet anschließend diese Activity.
      */
     public void addToHighscoreList() {
         spielVorbei.putExtra("zuege", zuege);
@@ -782,10 +783,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         finish();
     }
 
-    /**
-     * schließt durch Buttonklick auf den Button "zurück" die "PlayActivity" und der User findet
-     * sich auf der MainActivity wieder.
-     * @param view
+    /** onClick-Listener des Buttons "Zurück", der die Activity beendet.
+     *
+     * @param view ist das angeklickte View-Objekt, hier der Button "Zurück".
      */
     public void onClickBack (View view) {
         finish();

@@ -8,6 +8,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ *
+ */
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
@@ -99,7 +102,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void deleteScore(Score s) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_SCORES, KEY_ID + "=?",
-                new String[]{String.valueOf(s.getPoints())}); //getID
+                new String[]{String.valueOf(s.getId())});
         db.close();
     }
 
@@ -110,7 +113,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public ArrayList<Score> getScores() {
-
         // Datenbankverbindung öffnen.
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -125,9 +127,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return l;
         }
 
-        while(c.moveToNext())
-        {
-            Score s = new Score(Integer.parseInt(c.getString(0)), c.getString(1), Integer.parseInt(c.getString(2)));
+        while(c.moveToNext()) {
+            Score s = new Score(Integer.parseInt(c.getString(0)), c.getString(1),
+                    Integer.parseInt(c.getString(2)));
             l.add(s);
         }
 

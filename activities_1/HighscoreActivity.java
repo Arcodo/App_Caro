@@ -15,100 +15,115 @@ import java.util.Collections;
 
 public class HighscoreActivity extends AppCompatActivity {
 
+    // Viewobjekte
     private ListView listView;
+
+    // Objekte aus anderen Klassen
     private DatabaseHandler dbh;
-    private ArrayList<Score> scoreList;
-    private String[] spieldaten;
-    private ListAdapter adapter;
-    private Score scoreNeu;
     private Score score;
+
+    // ArrayList um Elemente der Datenbank verwalten zu können
+    private ArrayList<Score> scoreList;
+
+    // String-Array und zugehöriger ArrayAdapter um Elemente der ArrayList in ListView
+    // ausgeben zu können
+    private String[] spieldaten;
+    private ArrayAdapter<String> adapter;
+
+    // Varaiblen
     private int punkte;
     private String name;
 
+    /** erzeugt die Activity und setzt deren Layout.
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_highscore);
 
-        // Den Handler für den Zugriff auf die Datenbank erstellen.
+        // der Handler für den Zugriff auf die Datenbank wird erstellt
         dbh = new DatabaseHandler(this);
 
+        // Referenz auf listView wird zugewiesen
         listView = (ListView) findViewById(R.id.listView);
 
-        spieldaten = new String[11];
-
-        adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, spieldaten);
-
+        // die Informationen des Intents werden ausgelesen und in den Varaiblen "punkte" und
+        // "name" gespeichert
         Intent i = getIntent();
         punkte = i.getIntExtra("zuege", 0);
         name = i.getStringExtra("name");
 
         this.addScore();
 
+        // ArrayList "scoreList" wird mit den Elementen der Datenbank gefüllt
         scoreList = dbh.getScores();
+        // ArrayList "scoreList" wird sortiert
         Collections.sort(scoreList);
-
-        checkTableSize();
 
         this.printTable();
     }
 
+    /** überprüft, ob ein Wert für die Varaible "name" übergebeen wurde. Falls ein Wert übergeben
+     * wurde, wird ein neues Objekt der Klasse "Score" erstellt und in die Datenbank eingefügt.
+     */
     public void addScore() {
         if(name != null) {
-            scoreNeu = new Score(name, punkte);
-            dbh.addScore(scoreNeu);
+            score = new Score(name, punkte);
+            dbh.addScore(score);
         }
     }
 
-    public void checkTableSize() {
-        if(scoreList.size() > 10) {
-            for (int i = scoreList.size()-1; i > 10; i--) {
-                score = dbh.getScore(i);
-                dbh.deleteScore(score);
-            }
-        }
-    }
-
-    // Info für mich: scores.get(0) gibt erstes Element der Array-List aus
-    // scores.get(0).getName() gibt nue namen aus
+    /** überprüft, ob die ArrayList überhaupt ein Element enthält. Wenn die ArrayList leer ist,
+     * wird ein Toast erzeugt. Ansonsten werden die einzelnen Elemente über den ArrayAdapter in
+     * der ListView ausgegeben.
+     */
     private void printTable() {
         if(scoreList.size() == 0) {
             makeToastEmptyTable();
         }
-        if(scoreList.size() > 10) {
-            for (int i = scoreList.size()-1; i > 10; i--) {
-                score = dbh.getScore(i);
-                dbh.deleteScore(score);
+        if(scoreList.size() < 10) {
+            spieldaten = new String[scoreList.size()];
+            for(int i = 0; i < scoreList.size(); i++) {
+                spieldaten[i] = (i+1) + "   Name: " + scoreList.get(i).getName() + "   Punkte: "
+                        + scoreList.get(i).getPoints();
             }
         }
         else {
-            for(int i = 0; i < scoreList.size(); i++) {
-                spieldaten[i] = (i + 1) + "   Spieler: " + scoreList.get(i).getName() +
-                        "   Punkte: " + scoreList.get(i).getPoints();
+            spieldaten = new String[10];
+            for(int i = 0; i < 10; i++) {
+                spieldaten[i] = (i+1) + "   Name: " + scoreList.get(i).getName() + "   Punkte: "
+                        + scoreList.get(i).getPoints();
             }
-            listView.setAdapter(adapter);
         }
+        adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, spieldaten);
+        listView.setAdapter(adapter);
     }
 
+    /** erzeugt einen Toast.
+     */
     public void makeToastEmptyTable() {
-        Toast.makeText(HighscoreActivity.this, "Die Highscore-Table ist leer!",
+        Toast.makeText(HighscoreActivity.this, "Die Highscore-Liste ist leer!",
                 Toast.LENGTH_SHORT).show();
     }
 
-    public void onClickDelet(View view) {
+    /** onClick-Methode des Buttons "Löschen", die die Datenbank löscht und die Activity
+     * anschließend beendet.
+     *
+     * @param view  ist das angeklickte View-Objekt, hier der Button "Löschen".
+     */
+    public void onClickDelete(View view) {
         dbh.deleteAll();
         finish();
     }
 
-    /** ofiofero.
+    /** onClick-Methode des Buttons "Löschen", die die Activity beendet.
      *
-     * Hinweis:
-     *
-     * @param view
+     * @param view ist das angeklickte View-Objekt, hier der Button "Zurück".
      */
     public void onClickBack(View view) {
         finish();
     }
-
 }

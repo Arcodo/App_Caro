@@ -1,6 +1,7 @@
 package com.example.admin.fingertwister;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -41,25 +42,49 @@ public class GameOverActivity extends AppCompatActivity {
                 + "Highscore-Liste abzuspeichern.");
     }
 
+    /**
+     * onClick-Listener des Buttons "Speichern", der überprüft, ob der EditText "nameSpieler" mit
+     * einem Wert gefüllt wurde.
+     *
+     * @param view
+     */
     public void onClickSave(View view) {
         if(nameSpieler.getText().toString().isEmpty() == true) {
             makeToastNoEntry();
         }
         else {
-            name = nameSpieler.getText().toString();
-            highscore.putExtra("zuege", spielstand);
-            highscore.putExtra("name", name);
-            setResult(3, highscore);
-            finish();
+            addToHighscoreList();
         }
     }
 
+    /**
+     * übergibt den Wert der Varaible "groesseSpielfeld" an das Intent "spielStarten".
+     * ruft Methode "setResult()" mit Eingangsparametern "1" als resetCode und "spielStarten" als
+     * Intent auf und springt dadurch in die Methode "onActivityresult" der MainActivity.
+     * beendet anschließend diese Activity.
+     */
+    public void addToHighscoreList() {
+        name = nameSpieler.getText().toString();
+        highscore.putExtra("zuege", spielstand);
+        highscore.putExtra("name", name);
+        setResult(3, highscore);
+        finish();
+    }
+
+    /**
+     * löst einen Toast aus
+     */
     public void makeToastNoEntry() {
         Toast.makeText(GameOverActivity.this, "Geben Sie Ihren Namen ein oder drücken Sie "
                 + "'Abbrechen', wenn Sie Ihren Spielstand nicht in die Highscore-Liste hinzufügen "
                 + "möchten!", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * onClick-Listener des Buttons "Abbrechen", der die Activity beendet.
+     *
+     * @param view
+     */
     public void onClickCancel(View view) {
         finish();
     }
