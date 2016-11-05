@@ -23,38 +23,19 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private TextView aktuelleFarbe;
     private TextView anzahlZuege;
 
-    // Bild-Arrays für die einzelnen Felder des Spielfeldes und deren Koordianaten
-    // hier float, da berechnung damit schneller geht !
-    // (entspricht double, ist aber ein wenig ungenauer -> schneller
-    // grüne Felder
-    private ImageView[] grueneKreise;
-    private float[] xGruen;
-    private float[] yGruen;
-    // gelbe Felder
-    private ImageView[] gelbeKreise;
-    private float[] xGelb;
-    private float[] yGelb;
-    // blaue Felder
-    private ImageView[] blaueKreise;
-    private float[] xBlau;
-    private float[] yBlau;
-    // rote Felder
-    private ImageView[] roteKreise;
-    private float[] xRot;
-    private float[] yRot;
+    // neues Objekt der Klasse Field
+    private Field spielfeld;
 
-    // Array-List für gesamtes Spielfeld
+    // Array-List für gesamtes Spielfeld, aus Java Paket
     private ArrayList<ImageView[]> kreise;
-    private ImageView[] kreisArray;
 
-    // Arrays zur zufälligen Ausgabe von Finger und Farbe für jeden Spielzug
-    private String[] finger;
-    private String[] farbe;
+    // Array zum Verwalten der Elemente der Array-List
+    private ImageView[] kreisArray;
 
     // Objekte aus Java Paket
     private Random generator;
 
-    //
+    // neuer CountDownTimer und neues Intent
     private CountDownTimer timer;
     private Intent spielVorbei;
 
@@ -98,52 +79,24 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         aktuelleFarbe = (TextView) findViewById(R.id.aktuelleFarbe);
         anzahlZuege = (TextView) findViewById(R.id.anzahlZuege);
 
-        // Zufallsgenerator zuweisen
+        // Referenz auf Field zuweisen
+        spielfeld = new Field();
+
+        // Referenz auf Zufallsgenerator zuweisen
         generator = new Random();
 
         // Referenz auf Intent zuweisen
         spielVorbei = new Intent(this, GameOverActivity.class);
 
-        // Arrays für einzelne Felder des Spielfeldes und deren Koordinaten zuweisen
-        grueneKreise = new ImageView[5];
-        xGruen = new float[5];
-        yGruen = new float[5];
-        gelbeKreise = new ImageView[5];
-        xGelb = new float[5];
-        yGelb = new float[5];
-        blaueKreise = new ImageView[5];
-        xBlau = new float[5];
-        yBlau = new float[5];
-        roteKreise = new ImageView[5];
-        xRot = new float[5];
-        yRot = new float[5];
-
         // ArrayList für gesamtes Spielfeld zuweisen
         kreise = new ArrayList<ImageView[]>();
         kreisArray = new ImageView[20];
 
-        // Elemenz
-        kreise.add(0, grueneKreise);
-        kreise.add(1, gelbeKreise);
-        kreise.add(2, blaueKreise);
-        kreise.add(3, roteKreise);
-
-        // Arrays zuweisen
-        finger = new String[5];
-        farbe = new String[4];
-
-        // Werte für Arrays zuweisen
-        // Finger-Array
-        finger[0] = "Daumen";
-        finger[1] = "Zeigefinger";
-        finger[2] = "Mittelfinger";
-        finger[3] = "Ringfinger";
-        finger[4] = "kleiner Finger";
-        // Farben-Array
-        farbe[0] = "gruen";
-        farbe[1] = "gelb";
-        farbe[2] = "blau";
-        farbe[3] = "rot";
+        // Elemente in ArrayList "kreise" einfügen
+        kreise.add(0, spielfeld.getGreenFields());
+        kreise.add(1, spielfeld.getYellowFields());
+        kreise.add(2, spielfeld.getBlueFields());
+        kreise.add(3, spielfeld.getRedFields());
 
         // Inhalt des Intents wird der Variable "groesseKreis" zugewiesen
         Intent kreismas = getIntent();
@@ -156,7 +109,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             ImageView[] kreisArray = kreise.get(k);
             for (int i = 0; i < kreisArray.length; i++) {
                 kreisArray[i] = (ImageView) findViewById(getResources().getIdentifier(
-                        farbe[k] + (i + 1), "id", getPackageName()));
+                        spielfeld.getColour(k) + (i + 1), "id", getPackageName()));
                 kreisArray[i].setOnTouchListener(this);
                 // die hier zugewiesenen Höhen und Breiten der Bilder überschreiben die in der
                 // zugehörigen xml-Datei zugewiesenen Werte
@@ -173,16 +126,14 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         newMoveNumber();
     }
 
-    /**
-     * zählt Anzahl der Züge mit und gibt diese in der TextView "zuganzahlText" aus.
+    /** zählt Anzahl der Züge mit und gibt diese in der TextView "zuganzahlText" aus.
      */
     public void newMoveNumber() {
         zuege = zuege + 1;
         anzahlZuege.setText("Anzahl der Züge:      " + zuege);
     }
 
-    /**
-     * ruf die beiden Methoden newFinger() und newColour() auf, in denen per Zufallsprinzip der
+    /** ruf die beiden Methoden newFinger() und newColour() auf, in denen per Zufallsprinzip der
      * Finger und die Farbe für den nächsten Spielzug ermittelt werden. Außerdem wird ein
      * Countdowm gestartet und der Button '' unsichtbar gesetzt.
      */
@@ -193,26 +144,23 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         makeButtonInvisible();
     }
 
-    /**
-     * bestimmt mit Hilfe des Zufallsgenerators den Finger für den nächsten Zug und gibt diesen
+    /** bestimmt mit Hilfe des Zufallsgenerators den Finger für den nächsten Zug und gibt diesen
      * über die TextView "fingerText" aus.
      */
     public void newFinger() {
         fingerwahl = generator.nextInt(5);
-        aktuellerFinger.setText(finger[fingerwahl] + "       auf");
+        aktuellerFinger.setText(spielfeld.getFinger(fingerwahl) + "       auf");
     }
 
-    /**
-     * bestimmt mit Hilfe des Zufallsgenerators die Farbe für den nächsten Zug und gibt diese
+    /** bestimmt mit Hilfe des Zufallsgenerators die Farbe für den nächsten Zug und gibt diese
      * über die TextView "farbeText" aus.
      */
     public void newColour() {
         farbwahl = generator.nextInt(4);
-        aktuelleFarbe.setText(farbe[farbwahl]);
+        aktuelleFarbe.setText(spielfeld.getColour(farbwahl));
     }
 
-    /**
-     * startet einen Count-Down von 5 Sekunden der, wenn diese Zeit abgelaufen ist, ohne das die
+    /** startet einen Count-Down von 5 Sekunden der, wenn diese Zeit abgelaufen ist, ohne das die
      * richtige Taste gedrückt wurde, das Spiel beendet. Der Timer wurde eingeführt, um die
      * Schwierigkeit des Spiels zu steigern.
      */
@@ -224,7 +172,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
             @Override
             public void onFinish() {
-                // gameOver();
+                gameOver();
             }
         }.start();
     }
@@ -238,8 +186,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         newMoveNumber();
     }
 
-    /**
-     * deaktiviert den Butten "neuerZug", sodass er vom Spieler nicht mehr manuell betätigt
+    /** deaktiviert den Butten "neuerZug", sodass er vom Spieler nicht mehr manuell betätigt
      * werden kann.
      */
     public void makeButtonInvisible() {
@@ -261,15 +208,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             // grüne Tasten
             case R.id.gruen1:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xGruen[0] = event.getX();
-                    yGruen[0] = event.getY();
-                    checkActionDown(farbe[0], R.id.gruen1);
+                    spielfeld.setX(spielfeld.getColour(0), 0, event.getX());
+                    spielfeld.setY(spielfeld.getColour(0), 0, event.getY());
+                    checkActionDown(spielfeld.getColour(0), R.id.gruen1);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xGruen[0] + (groesseKreis/2) ||
-                                event.getY() > yGruen[0] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(0), 0) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -280,15 +228,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.gruen2:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xGruen[1] = event.getX();
-                    yGruen[1] = event.getY();
-                    checkActionDown(farbe[0], R.id.gruen2);
+                    spielfeld.setX(spielfeld.getColour(0), 1, event.getX());
+                    spielfeld.setY(spielfeld.getColour(0), 1, event.getY());
+                    checkActionDown(spielfeld.getColour(0), R.id.gruen2);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xGruen[1] + (groesseKreis/2) ||
-                                event.getY() > yGruen[1] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 1) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(0), 1) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -299,15 +248,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.gruen3:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xGruen[2] = event.getX();
-                    yGruen[2] = event.getY();
-                    checkActionDown(farbe[0], R.id.gruen3);
+                    spielfeld.setX(spielfeld.getColour(0), 2, event.getX());
+                    spielfeld.setY(spielfeld.getColour(0), 2, event.getY());
+                    checkActionDown(spielfeld.getColour(0), R.id.gruen3);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xGruen[2] + (groesseKreis/2) ||
-                                event.getY() > yGruen[2] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 2) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(0), 2) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -318,15 +268,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.gruen4:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xGruen[3] = event.getX();
-                    yGruen[3] = event.getY();
-                    checkActionDown(farbe[0], R.id.gruen4);
+                    spielfeld.setX(spielfeld.getColour(0), 3, event.getX());
+                    spielfeld.setY(spielfeld.getColour(0), 3, event.getY());
+                    checkActionDown(spielfeld.getColour(0), R.id.gruen4);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xGruen[3] + (groesseKreis/2) ||
-                                event.getY() > yGruen[3] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 3) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(0), 3) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -337,15 +288,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.gruen5:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xGruen[4] = event.getX();
-                    yGruen[4] = event.getY();
-                    checkActionDown(farbe[0], R.id.gruen5);
+                    spielfeld.setX(spielfeld.getColour(0), 4, event.getX());
+                    spielfeld.setY(spielfeld.getColour(0), 4, event.getY());
+                    checkActionDown(spielfeld.getColour(0), R.id.gruen5);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xGruen[4] + (groesseKreis/2) ||
-                                event.getY() > yGruen[4] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 4) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(0), 4) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -357,15 +309,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             // gelbe Tasten
             case R.id.gelb1:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xGelb[0] = event.getX();
-                    yGelb[0] = event.getY();
-                    checkActionDown(farbe[1], R.id.gelb1);
+                    spielfeld.setX(spielfeld.getColour(1), 0, event.getX());
+                    spielfeld.setY(spielfeld.getColour(1), 0, event.getY());
+                    checkActionDown(spielfeld.getColour(1), R.id.gelb1);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xGelb[0] + (groesseKreis/2) ||
-                                event.getY() > yGelb[0] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(1), 0) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(1), 0) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -376,15 +329,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.gelb2:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xGelb[1] = event.getX();
-                    yGelb[1] = event.getY();
-                    checkActionDown(farbe[1], R.id.gelb2);
+                    spielfeld.setX(spielfeld.getColour(1), 1, event.getX());
+                    spielfeld.setY(spielfeld.getColour(1), 1, event.getY());
+                    checkActionDown(spielfeld.getColour(1), R.id.gelb2);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xGelb[1] + (groesseKreis/2) ||
-                                event.getY() > yGelb[1] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(1), 1) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(1), 1) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -395,15 +349,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.gelb3:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xGelb[2] = event.getX();
-                    yGelb[2] = event.getY();
-                    checkActionDown(farbe[1], R.id.gelb3);
+                    spielfeld.setX(spielfeld.getColour(1), 2, event.getX());
+                    spielfeld.setY(spielfeld.getColour(1), 2, event.getY());
+                    checkActionDown(spielfeld.getColour(1), R.id.gelb3);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xGelb[2] + (groesseKreis/2) ||
-                                event.getY() > yGelb[2] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(1), 2) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(1), 2) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -414,15 +369,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.gelb4:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xGelb[3] = event.getX();
-                    yGelb[3] = event.getY();
-                    checkActionDown(farbe[1], R.id.gelb4);
+                    spielfeld.setX(spielfeld.getColour(1), 3, event.getX());
+                    spielfeld.setY(spielfeld.getColour(1), 3, event.getY());
+                    checkActionDown(spielfeld.getColour(1), R.id.gelb4);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xGelb[3] + (groesseKreis/2) ||
-                                event.getY() > yGelb[3] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(1), 3) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(1), 3) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -433,15 +389,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.gelb5:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xGelb[4] = event.getX();
-                    yGelb[4] = event.getY();
-                    checkActionDown(farbe[1], R.id.gelb5);
+                    spielfeld.setX(spielfeld.getColour(1), 4, event.getX());
+                    spielfeld.setY(spielfeld.getColour(1), 4, event.getY());
+                    checkActionDown(spielfeld.getColour(1), R.id.gelb5);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xGelb[4] + (groesseKreis/2) ||
-                                event.getY() > yGelb[4] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(1), 4) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(1), 4) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -453,15 +410,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             // blaue Tasten
             case R.id.blau1:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xBlau[0] = event.getX();
-                    yBlau[0] = event.getY();
-                    checkActionDown(farbe[2], R.id.blau1);
+                    spielfeld.setX(spielfeld.getColour(2), 0, event.getX());
+                    spielfeld.setY(spielfeld.getColour(2), 0, event.getY());
+                    checkActionDown(spielfeld.getColour(2), R.id.blau1);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xBlau[0] + (groesseKreis/2) ||
-                                event.getY() > yBlau[0] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(2), 0) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(2), 0) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -472,15 +430,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.blau2:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xBlau[1] = event.getX();
-                    yBlau[1] = event.getY();
-                    checkActionDown(farbe[2], R.id.blau2);
+                    spielfeld.setX(spielfeld.getColour(2), 1, event.getX());
+                    spielfeld.setY(spielfeld.getColour(2), 1, event.getY());
+                    checkActionDown(spielfeld.getColour(2), R.id.blau2);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xBlau[1] + (groesseKreis/2) ||
-                                event.getY() > yBlau[1] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(2), 1) + (
+                                groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(2), 1) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -491,15 +450,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.blau3:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xBlau[2] = event.getX();
-                    yBlau[2] = event.getY();
-                    checkActionDown(farbe[2], R.id.blau3);
+                    spielfeld.setX(spielfeld.getColour(2), 2, event.getX());
+                    spielfeld.setY(spielfeld.getColour(2), 2, event.getY());
+                    checkActionDown(spielfeld.getColour(2), R.id.blau3);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xBlau[2] + (groesseKreis/2) ||
-                                event.getY() > yBlau[2] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(2), 2) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(2), 2) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -510,15 +470,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.blau4:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xBlau[3] = event.getX();
-                    yBlau[3] = event.getY();
-                    checkActionDown(farbe[2], R.id.blau4);
+                    spielfeld.setX(spielfeld.getColour(2), 3, event.getX());
+                    spielfeld.setY(spielfeld.getColour(2), 3, event.getY());
+                    checkActionDown(spielfeld.getColour(2), R.id.blau4);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xBlau[3] + (groesseKreis/2) ||
-                                event.getY() > yBlau[3] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(2), 3) + (
+                                groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(2), 3) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -529,14 +490,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.blau5:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xBlau[4] = event.getX();
-                    yBlau[4] = event.getY();
+                    spielfeld.setX(spielfeld.getColour(2), 4, event.getX());
+                    spielfeld.setY(spielfeld.getColour(2), 4, event.getY());
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xBlau[4] + (groesseKreis/2) ||
-                                event.getY() > yBlau[4] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(2), 4) + (
+                                groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(2), 4) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -548,15 +510,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             // rote Tasten
             case R.id.rot1:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xRot[0] = event.getX();
-                    yRot[0] = event.getY();
-                    checkActionDown(farbe[3], R.id.rot1);
+                    spielfeld.setX(spielfeld.getColour(3), 0, event.getX());
+                    spielfeld.setY(spielfeld.getColour(3), 0, event.getY());
+                    checkActionDown(spielfeld.getColour(3), R.id.rot1);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xRot[0] + (groesseKreis/2) ||
-                                event.getY() > yRot[0] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(3), 0) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(3), 0) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -567,15 +530,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.rot2:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xRot[1] = event.getX();
-                    yRot[1] = event.getY();
-                    checkActionDown(farbe[3], R.id.rot2);
+                    spielfeld.setX(spielfeld.getColour(3), 1, event.getX());
+                    spielfeld.setY(spielfeld.getColour(3), 1, event.getY());
+                    checkActionDown(spielfeld.getColour(3), R.id.rot2);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xRot[1] + (groesseKreis/2) ||
-                                event.getY() > yRot[1] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(3), 1) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(3), 1) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -586,15 +550,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.rot3:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xRot[2] = event.getX();
-                    yRot[2] = event.getY();
-                    checkActionDown(farbe[3], R.id.rot3);
+                    spielfeld.setX(spielfeld.getColour(3), 2, event.getX());
+                    spielfeld.setY(spielfeld.getColour(3), 2, event.getY());
+                    checkActionDown(spielfeld.getColour(3), R.id.rot3);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xRot[2] + (groesseKreis/2) ||
-                                event.getY() > yRot[2] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(3), 2) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(3), 2) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -605,15 +570,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.rot4:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xRot[3] = event.getX();
-                    yRot[3] = event.getY();
-                    checkActionDown(farbe[3], R.id.rot4);
+                    spielfeld.setX(spielfeld.getColour(3), 3, event.getX());
+                    spielfeld.setY(spielfeld.getColour(3), 3, event.getY());
+                    checkActionDown(spielfeld.getColour(3), R.id.rot4);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xRot[3] + (groesseKreis/2) ||
-                                event.getY() > yRot[3] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(3), 3) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(3), 3) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -624,15 +590,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             case R.id.rot5:
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    xRot[4] = event.getX();
-                    yRot[4] = event.getY();
-                    checkActionDown(farbe[3], R.id.rot5);
+                    spielfeld.setX(spielfeld.getColour(3), 4, event.getX());
+                    spielfeld.setY(spielfeld.getColour(3), 4, event.getY());
+                    checkActionDown(spielfeld.getColour(3), R.id.rot5);
                     return true;
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > xRot[4] + (groesseKreis/2) ||
-                                event.getY() > yRot[4] + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(3), 4) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(3), 4) + (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -645,16 +612,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         return false;
     }
 
-    /**
-     * überprüft, ob das gedrückte Feld die in diesem Spielzug angezeigte Farbe hat.
+    /** überprüft, ob das gedrückte Feld die in diesem Spielzug angezeigte Farbe hat.
      *
      * @param farbeFeld
      * @param idFeld
      */
     public void checkActionDown(String farbeFeld, int idFeld) {
         if(checkTask() == true) {
-            if(farbeFeld == farbe[farbwahl]) {
-                saveFingerPosition(finger[fingerwahl], idFeld);
+            if(farbeFeld == spielfeld.getColour(farbwahl)) {
+                saveFingerPosition(spielfeld.getFinger(fingerwahl), idFeld);
             }
             else {
                 gameOver();
@@ -665,8 +631,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    /**
-     * überprüft, ob die Taste neuer Zug bereits einmal betätigt wurde, d.h. ob im dem Moment,
+    /** überprüft, ob die Taste neuer Zug bereits einmal betätigt wurde, d.h. ob im dem Moment,
      * in dem eine Taste gedrückt wird, überhaupt schon eine Spielanweisung besteht.
      *
      * @return
@@ -680,34 +645,32 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    /**
-     * überprüft welcher Finger die Taste aktuell gedrückt hält und weist der Varaible für den
+    /** überprüft welcher Finger die Taste aktuell gedrückt hält und weist der Varaible für den
      * entsprechnden Finger die ID des gedrückten Feldes zu.
      *
      * @param benutzterFinger
      * @param idFeld
      */
     public void saveFingerPosition(String benutzterFinger, int idFeld) {
-        if (benutzterFinger == finger[0]) {
+        if (benutzterFinger == spielfeld.getFinger(0)) {
             positionDaumen = idFeld;
         }
-        if (benutzterFinger == finger[1]) {
+        if (benutzterFinger == spielfeld.getFinger(1)) {
             positionZeigefinger = idFeld;
         }
-        if (benutzterFinger == finger[2]) {
+        if (benutzterFinger == spielfeld.getFinger(2)) {
             positionMittelfinger = idFeld;
         }
-        if (benutzterFinger == finger[3]) {
+        if (benutzterFinger == spielfeld.getFinger(3)) {
             positionRingfinger = idFeld;
         }
-        if (benutzterFinger == finger[4]) {
+        if (benutzterFinger == spielfeld.getFinger(4)) {
             positionKleinerFinger = idFeld;
         }
         cancelTimer();
     }
 
-    /**
-     * überprüft, ob das Loslassen des Feldes berechtigt war, d.h. ob der neue Spielzug den Spieler
+    /** überprüft, ob das Loslassen des Feldes berechtigt war, d.h. ob der neue Spielzug den Spieler
      * anweist, den Finger, welcher zuvor dieses Feld gedückt hielt, nun auf ein anderes Feld zu
      * setzen.
      *
@@ -727,19 +690,24 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         if(farbwahl == 9) {
             return true;
         }
-        if(idFeld == positionDaumen && finger[0] == finger[fingerwahl]) {
+        if(idFeld == positionDaumen &&
+                spielfeld.getFinger(0) == spielfeld.getFinger(fingerwahl)) {
             return true;
         }
-        if(idFeld == positionZeigefinger && finger[1] == finger[fingerwahl]) {
+        if(idFeld == positionZeigefinger &&
+                spielfeld.getFinger(1) == spielfeld.getFinger(fingerwahl)) {
             return true;
         }
-        if(idFeld == positionMittelfinger && finger[2] == finger[fingerwahl]) {
+        if(idFeld == positionMittelfinger &&
+                spielfeld.getFinger(2) == spielfeld.getFinger(fingerwahl)) {
             return true;
         }
-        if(idFeld == positionRingfinger && finger[3] == finger[fingerwahl]) {
+        if(idFeld == positionRingfinger &&
+                spielfeld.getFinger(3) == spielfeld.getFinger(fingerwahl)) {
             return true;
         }
-        if(idFeld == positionKleinerFinger && finger[4] == finger[fingerwahl]) {
+        if(idFeld == positionKleinerFinger &&
+                spielfeld.getFinger(4) == spielfeld.getFinger(fingerwahl)) {
             return true;
         }
         else {
@@ -748,8 +716,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    /**
-     *
+    /** erzeugt einen Toast.
      */
     public void makeToastNoTask() {
         Toast.makeText(PlayActivity.this, "Es gibt noch keine Aufgabe. Betätige die Taste" +

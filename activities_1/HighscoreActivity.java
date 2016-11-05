@@ -35,6 +35,7 @@ public class HighscoreActivity extends AppCompatActivity {
     private String name;
 
     /** erzeugt die Activity und setzt deren Layout.
+     * erzeugt alle nötigen Objekte und weist deren Werte zu.
      *
      * @param savedInstanceState
      */
