@@ -23,6 +23,11 @@ public class MainActivity extends AppCompatActivity {
     private Intent startHighscoreActivityOhneUebergabe;
     private Intent startInfoActivity;
 
+    // Variablen für die durch die intents übergebenen Werte
+    private int mas;
+    private int zuege;
+    private int punkte;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,24 +61,25 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(startInfoActivity, 5);
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(resultCode) {
             // aus SettingActivity kommend
             case 1:
-                int mas = data.getIntExtra("groesseSpielfeld", 0);
+                mas = data.getIntExtra("groesseSpielfeld", 0);
                 startPlayActivity.putExtra("groesseSpielfeld", mas);
                 startActivityForResult(startPlayActivity, 1);
                 break;
             // aus PlayActivity kommend
             case 2:
-                int zuege = data.getIntExtra("zuege", 0);
+                zuege = data.getIntExtra("zuege", 0);
                 startGameOverAcivity.putExtra("zuege", zuege);
                 startActivityForResult(startGameOverAcivity, 2);
                 break;
             // aus GameOverActivity kommend
             case 3:
-                int punkte = data.getIntExtra("zuege", 0);
+                punkte = data.getIntExtra("zuege", 0);
                 String name = data.getStringExtra("name");
                 startHighscoreActivity.putExtra("zuege", punkte);
                 startHighscoreActivity.putExtra("name", name);

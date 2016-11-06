@@ -126,14 +126,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         newMoveNumber();
     }
 
-    /** zählt Anzahl der Züge mit und gibt diese in der TextView "zuganzahlText" aus.
+    /**
+     * zählt Anzahl der Züge mit und gibt diese in der TextView "zuganzahlText" aus.
      */
     public void newMoveNumber() {
         zuege = zuege + 1;
         anzahlZuege.setText("Anzahl der Züge:      " + zuege);
     }
 
-    /** ruf die beiden Methoden newFinger() und newColour() auf, in denen per Zufallsprinzip der
+    /**
+     * ruf die beiden Methoden newFinger() und newColour() auf, in denen per Zufallsprinzip der
      * Finger und die Farbe für den nächsten Spielzug ermittelt werden. Außerdem wird ein
      * Countdowm gestartet und der Button '' unsichtbar gesetzt.
      */
@@ -144,7 +146,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         makeButtonInvisible();
     }
 
-    /** bestimmt mit Hilfe des Zufallsgenerators den Finger für den nächsten Zug und gibt diesen
+    /**
+     * bestimmt mit Hilfe des Zufallsgenerators den Finger für den nächsten Zug und gibt diesen
      * über die TextView "fingerText" aus.
      */
     public void newFinger() {
@@ -152,7 +155,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         aktuellerFinger.setText(spielfeld.getFinger(fingerwahl) + "       auf");
     }
 
-    /** bestimmt mit Hilfe des Zufallsgenerators die Farbe für den nächsten Zug und gibt diese
+    /**
+     * bestimmt mit Hilfe des Zufallsgenerators die Farbe für den nächsten Zug und gibt diese
      * über die TextView "farbeText" aus.
      */
     public void newColour() {
@@ -160,7 +164,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         aktuelleFarbe.setText(spielfeld.getColour(farbwahl));
     }
 
-    /** startet einen Count-Down von 5 Sekunden der, wenn diese Zeit abgelaufen ist, ohne das die
+    /**
+     * startet einen Count-Down von 5 Sekunden der, wenn diese Zeit abgelaufen ist, ohne das die
      * richtige Taste gedrückt wurde, das Spiel beendet. Der Timer wurde eingeführt, um die
      * Schwierigkeit des Spiels zu steigern.
      */
@@ -186,7 +191,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         newMoveNumber();
     }
 
-    /** deaktiviert den Butten "neuerZug", sodass er vom Spieler nicht mehr manuell betätigt
+    /**
+     * deaktiviert den Butten "neuerZug", sodass er vom Spieler nicht mehr manuell betätigt
      * werden kann.
      */
     public void makeButtonInvisible() {
@@ -217,7 +223,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                     if(farbwahl != 9) {
                         if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(0), 0) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -235,9 +244,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 1) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(0), 1) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -255,9 +267,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 2) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(0), 2) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -275,9 +290,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 3) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(0), 3) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -295,9 +313,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 4) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(0), 4) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -316,9 +337,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(1), 0) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(1), 0) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -336,9 +360,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(1), 1) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(1), 1) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -356,9 +383,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(1), 2) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(1), 2) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -376,9 +406,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(1), 3) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(1), 3) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -396,9 +429,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(1), 4) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(1), 4) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -417,9 +453,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(2), 0) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(2), 0) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -437,9 +476,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(2), 1) + (
-                                groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(2), 1) + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -457,9 +499,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(2), 2) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(2), 2) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -477,9 +522,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(2), 3) + (
-                                groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(2), 3) + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -496,9 +544,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(2), 4) + (
-                                groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(2), 4) + (groesseKreis/2)) {
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
+                                (groesseKreis/2) || event.getY() > spielfeld.getY(
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -517,9 +568,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(3), 0) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(3), 0) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -537,9 +591,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(3), 1) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(3), 1) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -557,9 +614,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(3), 2) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(3), 2) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -577,9 +637,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(3), 3) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(3), 3) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -597,9 +660,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     if(farbwahl != 9) {
-                        if(event.getX() > spielfeld.getX(spielfeld.getColour(3), 4) +
+                        if(event.getX() > spielfeld.getX(spielfeld.getColour(0), 0) +
                                 (groesseKreis/2) || event.getY() > spielfeld.getY(
-                                spielfeld.getColour(3), 4) + (groesseKreis/2)) {
+                                spielfeld.getColour(0), 0) + (groesseKreis/2) ||
+                                event.getX() < spielfeld.getX(spielfeld.getColour(0), 0) -
+                                (groesseKreis/2) || event.getY() < spielfeld.getY(
+                                spielfeld.getColour(0), 0) - (groesseKreis/2)) {
                             gameOver();
                         }
                     }
@@ -612,7 +678,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         return false;
     }
 
-    /** überprüft, ob das gedrückte Feld die in diesem Spielzug angezeigte Farbe hat.
+    /**
+     * überprüft, ob das gedrückte Feld die in diesem Spielzug angezeigte Farbe hat.
      *
      * @param farbeFeld
      * @param idFeld
@@ -631,7 +698,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    /** überprüft, ob die Taste neuer Zug bereits einmal betätigt wurde, d.h. ob im dem Moment,
+    /**
+     * überprüft, ob die Taste neuer Zug bereits einmal betätigt wurde, d.h. ob im dem Moment,
      * in dem eine Taste gedrückt wird, überhaupt schon eine Spielanweisung besteht.
      *
      * @return
@@ -645,7 +713,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    /** überprüft welcher Finger die Taste aktuell gedrückt hält und weist der Varaible für den
+    /**
+     * überprüft welcher Finger die Taste aktuell gedrückt hält und weist der Varaible für den
      * entsprechnden Finger die ID des gedrückten Feldes zu.
      *
      * @param benutzterFinger
@@ -670,21 +739,25 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         cancelTimer();
     }
 
-    /** überprüft, ob das Loslassen des Feldes berechtigt war, d.h. ob der neue Spielzug den Spieler
+    /**
+     * überprüft, ob das Loslassen des Feldes berechtigt war, d.h. ob der neue Spielzug den Spieler
      * anweist, den Finger, welcher zuvor dieses Feld gedückt hielt, nun auf ein anderes Feld zu
      * setzen.
      *
-     * Hinweis: Hierbei ist idFeld das Feld welches losgelassen wurde, position(jeweiliger Finger)
-     * die letzte Position des jeweiligen Fingers gespeichert über die Id der zuletzt damit
-     * gedrückten Taste, finger['Zahl von 0 bis 4'] der gleiche Finger, der jeweils mit
-     * position(jeweiliger Finger) bezeichnet wird und finger[fingerwahl] steht für den im neuesten
-     * Spielzug angezeigten Finger. Im Fall 'farbwahl == 9' wird überprüft, ob der Variable farbwahl
-     * überhaupt schon ein Wert zugewiesen wurde oder ob noch gar kein Spielzug erzeugt wurde. Wenn
-     * noch kein Spielzug durch die Betätigung der Taste 'nächster Zug' erzeugt wurde, ist der Wert
-     * der Variable farbwahl 9.
+     * Hinweis: Im Fall 'farbwahl == 9' wird überprüft, ob der Variable farbwahl überhaupt schon
+     * ein Wert zugewiesen wurde oder ob noch gar keine Spielanweisung erzeugt wurde. Wenn noch
+     * kein Spielzug durch die Betätigung der Taste 'nächster Zug' erzeugt wurde, ist der Wert der
+     * Variable farbwahl noch 9. idFeld ist das Bild welches losgelassen wurde, position(jeweiliger
+     * Finger) die letzte Position des jeweiligen Fingers gespeichert über die Id der zuletzt damit
+     * gedrückten Taste. spielfeld.getFinger['Zahl von 0 bis 4'] ist der Finger, der jeweils zu
+     * position(jeweiliger Finger) zugehörig ist und spielfeld.getFinger[fingerwahl] steht für den
+     * im neuesten Spielzug angezeigten Finger. Es wird also abgefragt, von welchem Finger das
+     * ImageView zuletzt gedrückt wurde. Dann wird verglicheen, ob dieser Finger mit dem Finger der
+     * aktuellen Spielanweisung übereinstimmt. Ist dies der Fall, wurde das Bild berechtigt
+     * losgelassen. Anderenfalls ist das Spiel verloren.
      *
-     * @param idFeld
-     * @return
+     * @param idFeld ist die Id der losgelassenen ImageView.
+     * @return true, wenn die ImageView berechtigt losgelassen wurde.
      */
     public boolean checkActionUp(int idFeld) {
         if(farbwahl == 9) {
@@ -716,14 +789,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    /** erzeugt einen Toast.
+    /**
+     *  erzeugt einen Toast.
      */
     public void makeToastNoTask() {
         Toast.makeText(PlayActivity.this, "Es gibt noch keine Aufgabe. Betätige die Taste" +
                 " 'neuer Zug' um eine Spielanweisung zu erhalten!", Toast.LENGTH_SHORT).show();
     }
 
-    /** beendet das Spiel, indem dem die Methode "addToHighscoreList" ausferufen wird.
+    /**
+     * beendet das Spiel, indem dem die Methode "addToHighscoreList" ausferufen wird.
      *
      * Hinweis: Diese Methode soll nur ein einziges mal ausgeführt werden, nämlich nur wenn das
      * erste Mal ein Fehler gemacht wird, der das Spile beendet. Um zu verhindern, dass zum
@@ -739,7 +814,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    /** übergibt den Wert der Varaible "zuege" an das Intent "spielVorbei".
+    /**
+     * übergibt den Wert der Varaible "zuege" an das Intent "spielVorbei".
      * ruft Methode "setResult()" mit Eingangsparametern "2" als resetCode und "spielVorbei" als
      * Intent auf und springt dadurch in die Methode "onActivityresult" der MainActivity.
      * beendet anschließend diese Activity.
@@ -750,7 +826,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         finish();
     }
 
-    /** onClick-Listener des Buttons "Zurück", der die Activity beendet.
+    /**
+     * onClick-Listener des Buttons "Zurück", der die Activity beendet.
      *
      * @param view ist das angeklickte View-Objekt, hier der Button "Zurück".
      */

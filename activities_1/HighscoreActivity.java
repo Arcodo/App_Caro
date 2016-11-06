@@ -3,16 +3,18 @@ package com.example.admin.fingertwister;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Quelle: vgl. Mebiskurs "050 - WaA - 1W inf - Einführung in die App-Programmierung", Order "Code-
+ * Snippets und sonstige Projektteile", Unterordner "Datenbank", Datei "MainActivity"
+ */
 public class HighscoreActivity extends AppCompatActivity {
 
     // Viewobjekte
@@ -34,7 +36,8 @@ public class HighscoreActivity extends AppCompatActivity {
     private int punkte;
     private String name;
 
-    /** erzeugt die Activity und setzt deren Layout.
+    /**
+     * erzeugt die Activity und setzt deren Layout.
      * erzeugt alle nötigen Objekte und weist deren Werte zu.
      *
      * @param savedInstanceState
@@ -66,7 +69,8 @@ public class HighscoreActivity extends AppCompatActivity {
         this.printTable();
     }
 
-    /** überprüft, ob ein Wert für die Varaible "name" übergebeen wurde. Falls ein Wert übergeben
+    /**
+     * überprüft, ob ein Wert für die Varaible "name" übergebeen wurde. Falls ein Wert übergeben
      * wurde, wird ein neues Objekt der Klasse "Score" erstellt und in die Datenbank eingefügt.
      */
     public void addScore() {
@@ -76,9 +80,11 @@ public class HighscoreActivity extends AppCompatActivity {
         }
     }
 
-    /** überprüft, ob die ArrayList überhaupt ein Element enthält. Wenn die ArrayList leer ist,
-     * wird ein Toast erzeugt. Ansonsten werden die einzelnen Elemente über den ArrayAdapter in
-     * der ListView ausgegeben.
+    /**
+     * überprüft, ob die ArrayList überhaupt ein Element enthält. Wenn die ArrayList leer ist,
+     * wird ein Toast erzeugt. Sind zwischen ein und zehn Elemente enthalten, muss die Länge des
+     * String-Array individuell angepaast werden. Sind mehr als zehn Elemente enthalten, werden nur
+     * die ersten zehn über den ArrayAdapter in der ListView ausgegeben.
      */
     private void printTable() {
         if(scoreList.size() == 0) {
@@ -103,14 +109,16 @@ public class HighscoreActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-    /** erzeugt einen Toast.
+    /**
+     * erzeugt einen Toast.
      */
     public void makeToastEmptyTable() {
         Toast.makeText(HighscoreActivity.this, "Die Highscore-Liste ist leer!",
                 Toast.LENGTH_SHORT).show();
     }
 
-    /** onClick-Methode des Buttons "Löschen", die die Datenbank löscht und die Activity
+    /**
+     * onClick-Methode des Buttons "Löschen", die die Datenbank löscht und die Activity
      * anschließend beendet.
      *
      * @param view  ist das angeklickte View-Objekt, hier der Button "Löschen".
@@ -120,7 +128,8 @@ public class HighscoreActivity extends AppCompatActivity {
         finish();
     }
 
-    /** onClick-Methode des Buttons "Löschen", die die Activity beendet.
+    /**
+     * onClick-Methode des Buttons "Löschen", die die Activity beendet.
      *
      * @param view ist das angeklickte View-Objekt, hier der Button "Zurück".
      */
